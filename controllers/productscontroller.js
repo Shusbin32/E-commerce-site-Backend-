@@ -5,7 +5,10 @@ const mongoose = require('mongoose');
 exports.createProduct = async (req, res) => {
   try {
     const { name, description, price, unit, category, stock } = req.body;
-    const imagePath = req.file ? req.file.path : null;
+   const imagePath = req.file
+  ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
+  : null;
+
 
     if (!imagePath) {
       return res.status(400).json({ message: 'Image is required' });

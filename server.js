@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const path = require('path');
+
 require('dotenv').config();
 
 const authRoutes = require('./routes/authRoutes');
@@ -13,9 +15,13 @@ const User = require('./models/User');
 const app = express();
 const PORT = process.env.PORT || 5000;
 // Middlewares
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173",'https://machhapuchreydairy.vercel.app'], // Adjust this to your frontend URL
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+}));
 app.use(express.json());
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 // API Routes
 app.use('/api/auth', authRoutes);
